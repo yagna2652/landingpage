@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { client, postQuery, urlFor } from "@/lib/sanity";
+import { client, postQuery, relatedPostsQuery, urlFor } from "@/lib/sanity";
 import type { Post } from "@/lib/sanity";
 
 // Demo post content
@@ -111,6 +111,38 @@ function formatDate(dateString: string) {
   }).toUpperCase();
 }
 
+function formatDateShort(dateString: string) {
+  return new Date(dateString).toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+// Get related posts (excluding current)
+async function getRelatedPosts(currentSlug: string): Promise<Post[]> {
+  try {
+    if (!client) {
+      // Return demo posts excluding current
+      return Object.values(demoPostContent)
+        .filter((p) => p.slug.current !== currentSlug)
+        .slice(0, 4);
+    }
+    const posts = await client.fetch(relatedPostsQuery, { currentSlug });
+    if (posts && posts.length > 0) {
+      return posts;
+    }
+    // Fallback to demo posts
+    return Object.values(demoPostContent)
+      .filter((p) => p.slug.current !== currentSlug)
+      .slice(0, 4);
+  } catch {
+    return Object.values(demoPostContent)
+      .filter((p) => p.slug.current !== currentSlug)
+      .slice(0, 4);
+  }
+}
+
 export default async function BlogPostPage({
   params,
 }: {
@@ -122,6 +154,8 @@ export default async function BlogPostPage({
   if (!post) {
     notFound();
   }
+
+  const relatedPosts = await getRelatedPosts(slug);
 
   return (
     <main className="min-h-screen bg-[#e8e5de]">
@@ -223,6 +257,61 @@ export default async function BlogPostPage({
           </div>
         </article>
       </div>
+
+      {/* Related Articles */}
+      {relatedPosts.length > 0 && (
+        <section className="px-4 pb-16 md:px-8">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="mb-8 font-serif text-3xl tracking-[-0.06em] text-black">
+              Related articles
+            </h2>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {relatedPosts.map((relatedPost) => (
+                <Link
+                  key={relatedPost._id}
+                  href={`/blog/${relatedPost.slug.current}`}
+                  className="group"
+                >
+                  {/* Thumbnail */}
+                  <div className="aspect-[4/3] overflow-hidden rounded-xl bg-gray-100">
+                    {relatedPost.mainImage ? (
+                      <img
+                        src={urlFor(relatedPost.mainImage).width(400).url()}
+                        alt={relatedPost.title}
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+                        <span className="text-xs text-gray-400">Image</span>
+                      </div>
+                    )}
+                  </div>
+                  {/* Meta */}
+                  <div className="mt-3 flex items-center gap-2 text-xs text-gray-500">
+                    {relatedPost.category && (
+                      <>
+                        <span>{relatedPost.category}</span>
+                        <span>•</span>
+                      </>
+                    )}
+                    <span>{formatDateShort(relatedPost.publishedAt)}</span>
+                  </div>
+                  {/* Title */}
+                  <h3 className="mt-2 font-serif text-lg leading-tight tracking-[-0.04em] text-black group-hover:underline">
+                    {relatedPost.title}
+                  </h3>
+                  {/* Excerpt */}
+                  {relatedPost.excerpt && (
+                    <p className="mt-2 line-clamp-2 text-sm text-gray-600">
+                      {relatedPost.excerpt}
+                    </p>
+                  )}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Back to Blog Link */}
       <div className="pb-12 text-center">

@@ -79,3 +79,25 @@ export const featuredPostQuery = `*[_type == "post" && featured == true][0] {
   category,
   publishedAt
 }`;
+
+// Related posts query - excludes current post, optionally filters by category
+export const relatedPostsQuery = `*[_type == "post" && slug.current != $currentSlug] | order(publishedAt desc) [0...4] {
+  _id,
+  title,
+  slug,
+  excerpt,
+  mainImage,
+  category,
+  publishedAt
+}`;
+
+// Related posts by category
+export const relatedPostsByCategoryQuery = `*[_type == "post" && slug.current != $currentSlug && category == $category] | order(publishedAt desc) [0...4] {
+  _id,
+  title,
+  slug,
+  excerpt,
+  mainImage,
+  category,
+  publishedAt
+}`;
