@@ -167,7 +167,7 @@ export default async function BlogPostPage({
             )}
             
             {/* Title */}
-            <h1 className="mx-auto mt-8 max-w-3xl font-serif text-5xl leading-tight tracking-tight text-black md:text-6xl lg:text-7xl">
+            <h1 className="mx-auto mt-8 max-w-3xl font-serif text-5xl leading-[1.1] tracking-[-0.06em] text-black md:text-6xl lg:text-7xl">
               {post.title}
             </h1>
           </header>
@@ -185,24 +185,20 @@ export default async function BlogPostPage({
             </div>
           )}
 
-          {/* Content */}
+          {/* Content - Tufte-inspired typography */}
           <div className="px-6 py-16 md:px-8 md:py-24">
-            <div className="mx-auto max-w-[40rem]">
+            <div className="mx-auto max-w-[34em]">
               {post.content ? (
                 post.content.split("\n\n").map((paragraph, i) => (
                   <p 
                     key={i} 
-                    className="mb-8 text-[1.25rem] leading-[1.8] tracking-[-0.01em] text-[#374151] antialiased"
-                    style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }}
+                    className="mb-6 font-serif text-[1.3rem] leading-[1.58] tracking-[-0.04em] text-[#111] antialiased"
                   >
                     {paragraph}
                   </p>
                 ))
               ) : (
-                <p 
-                  className="text-[1.25rem] leading-[1.8] tracking-[-0.01em] text-[#374151] antialiased"
-                  style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }}
-                >
+                <p className="font-serif text-[1.3rem] leading-[1.58] tracking-[-0.04em] text-[#111] antialiased">
                   {post.excerpt}
                 </p>
               )}
