@@ -9,10 +9,10 @@ export default function Home() {
       {/* Hero Section - First Fold */}
       <section className="flex min-h-screen flex-col items-center justify-center px-6 pt-32">
         <div className="mx-auto max-w-3xl text-center">
-          <h1 className="font-serif text-5xl leading-tight tracking-tight text-black md:text-6xl lg:text-7xl">
+          <h1 className="font-serif text-5xl leading-tight tracking-[-0.06em] text-black md:text-6xl lg:text-7xl">
             Context that follows you across your AI tools.
           </h1>
-          <p className="mx-auto mt-6 max-w-xl text-lg text-gray-400">
+          <p className="mx-auto mt-6 max-w-xl text-lg tracking-[-0.04em] text-gray-400">
             Memory store syncs your context across every AI tool and team member—automatically.
           </p>
           <div className="mt-10">
@@ -60,10 +60,10 @@ export default function Home() {
       <section className="py-24">
         <div className="mx-auto max-w-4xl px-6">
           <div className="text-center">
-            <h2 className="font-serif text-4xl tracking-tight text-black md:text-5xl">
+            <h2 className="font-serif text-4xl tracking-[-0.06em] text-black md:text-5xl">
               Work with your tools
             </h2>
-            <p className="mx-auto mt-6 max-w-xl text-lg text-gray-600">
+            <p className="mx-auto mt-6 max-w-xl text-lg tracking-[-0.04em] text-gray-600">
               Seamlessly integrates with the tools you already use
             </p>
           </div>
@@ -137,10 +137,10 @@ export default function Home() {
       {/* CTA Section */}
       <section className="border-t border-gray-300 py-24">
         <div className="mx-auto max-w-3xl px-6 text-center">
-          <h2 className="font-serif text-3xl tracking-tight text-black md:text-4xl">
+          <h2 className="font-serif text-3xl tracking-[-0.06em] text-black md:text-4xl">
             Ready to build your second brain?
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-gray-700">
+          <p className="mx-auto mt-4 max-w-xl tracking-[-0.04em] text-gray-700">
             Join thousands who have already transformed how they think and
             remember.
           </p>

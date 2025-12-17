@@ -39,10 +39,10 @@ export function FeatureCard({
       <div className={`relative grid min-h-[600px] grid-cols-1 lg:grid-cols-2 ${reverse ? "lg:flex-row-reverse" : ""}`}>
         {/* Left - Text Content */}
         <div className={`flex flex-col justify-center p-12 lg:p-16 ${reverse ? "lg:order-2" : ""}`}>
-          <h2 className="font-serif text-4xl leading-tight tracking-tight text-black md:text-5xl">
+          <h2 className="font-serif text-4xl leading-tight tracking-[-0.06em] text-black md:text-5xl">
             {title}
           </h2>
-          <p className="mt-6 max-w-md text-lg leading-relaxed text-black">
+          <p className="mt-6 max-w-md text-lg leading-relaxed tracking-[-0.04em] text-black">
             {description}
           </p>
           <a
