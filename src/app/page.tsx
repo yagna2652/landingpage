@@ -12,7 +12,7 @@ export default function Home() {
           <h1 className="font-serif text-5xl leading-tight tracking-[-0.06em] text-black md:text-6xl lg:text-7xl">
             Context that follows you across your AI tools.
           </h1>
-          <p className="mx-auto mt-6 max-w-xl text-lg tracking-[-0.04em] text-gray-400">
+          <p className="mx-auto mt-6 max-w-xl text-lg tracking-[-0.04em] text-gray-600">
             Memory store syncs your context across every AI tool and team member—automatically.
           </p>
           <div className="mt-10">
