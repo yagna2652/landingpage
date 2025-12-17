@@ -1,28 +1,10 @@
-import Link from "next/link";
 import { FeatureCard } from "@/components/FeatureCard";
+import { Header } from "@/components/Header";
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col">
-      {/* Header */}
-      <header className="fixed top-0 z-50 w-full border-b border-gray-300 bg-[#ece9e2]/80 backdrop-blur-sm">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-          <Link href="/" className="font-serif text-xl tracking-tight text-black">
-            memory.store
-          </Link>
-          <nav className="flex items-center gap-6">
-            <Link
-              href="/blog"
-              className="text-sm text-gray-700 transition-colors hover:text-black"
-            >
-              Blog
-            </Link>
-            <button className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-800">
-              Get Started
-            </button>
-          </nav>
-        </div>
-      </header>
+      <Header variant="default" sticky={false} />
 
       {/* Hero Section - First Fold */}
       <section className="flex min-h-screen flex-col items-center justify-center px-6 pt-32">

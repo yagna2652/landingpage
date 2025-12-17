@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { client, postsQuery, featuredPostQuery, urlFor } from "@/lib/sanity";
 import type { Post } from "@/lib/sanity";
+import { Header } from "@/components/Header";
 
 // Demo posts for when Sanity is not configured
 const demoPosts: (Post & { readTime: string })[] = [
@@ -88,32 +89,11 @@ export default async function BlogPage() {
 
   return (
     <main className="min-h-screen bg-[#e8e5de]">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-[#e8e5de]">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-          <Link
-            href="/"
-            className="font-serif text-xl tracking-tight text-black"
-          >
-            memory.store
-          </Link>
-          <nav className="flex items-center gap-6">
-            <Link
-              href="/blog"
-              className="text-sm font-medium text-black"
-            >
-              Blog
-            </Link>
-            <button className="rounded-full bg-black px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-800">
-              Sign up
-            </button>
-          </nav>
-        </div>
-      </header>
+      <Header variant="blog" />
 
       {/* Main Content Card */}
       <div className="px-4 pb-8 pt-4 md:px-8">
-        <div className="mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] bg-white">
+        <div className="mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] bg-[#f3f1eb]">
           
           {/* Blog Header */}
           <header className="px-8 pb-12 pt-24 text-center md:px-16 md:pt-32">
