@@ -173,17 +173,21 @@ export default async function BlogPostPage({
           </header>
 
           {/* Featured Image */}
-          {post.mainImage && (
-            <div className="px-8 md:px-16">
-              <div className="overflow-hidden rounded-2xl">
+          <div className="px-8 md:px-16">
+            <div className="aspect-[2/1] overflow-hidden rounded-2xl bg-gray-100">
+              {post.mainImage ? (
                 <img
                   src={urlFor(post.mainImage).width(1200).url()}
                   alt={post.title}
-                  className="w-full"
+                  className="h-full w-full object-cover"
                 />
-              </div>
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+                  <span className="text-sm text-gray-400">Featured Image</span>
+                </div>
+              )}
             </div>
-          )}
+          </div>
 
           {/* Content - Tufte-inspired typography */}
           <div className="px-6 py-16 md:px-8 md:py-24">
