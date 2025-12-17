@@ -2,6 +2,7 @@ import Link from "next/link";
 import { client, postsQuery, featuredPostQuery, urlFor } from "@/lib/sanity";
 import type { Post } from "@/lib/sanity";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 // Demo posts for when Sanity is not configured
 const demoPosts: (Post & { readTime: string })[] = [
@@ -212,17 +213,7 @@ export default async function BlogPage() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="py-8 text-center">
-        <div className="flex justify-center gap-6 text-sm text-gray-600">
-          <a href="#" className="hover:text-black">Privacy</a>
-          <a href="#" className="hover:text-black">Terms</a>
-          <a href="#" className="hover:text-black">Contact</a>
-        </div>
-        <p className="mt-4 text-sm text-gray-500">
-          © 2025 memory.store
-        </p>
-      </footer>
+      <Footer />
     </main>
   );
 }

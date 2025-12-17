@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { client, postQuery, relatedPostsQuery, urlFor } from "@/lib/sanity";
 import type { Post } from "@/lib/sanity";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 // Demo post content
 const demoPostContent: Record<string, Post & { content: string; readTime: string }> = {
@@ -302,6 +303,8 @@ export default async function BlogPostPage({
           <span>←</span> Back to all posts
         </Link>
       </div>
+
+      <Footer />
     </main>
   );
 }

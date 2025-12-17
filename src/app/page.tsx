@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { FeatureCard } from "@/components/FeatureCard";
 import { Header } from "@/components/Header";
+import { InkBleedFilter } from "@/components/InkBleedFilter";
+import { Footer } from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -158,53 +160,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="relative overflow-hidden py-24">
-        {/* Background GIF */}
-        <div className="absolute inset-0">
-          <Image
-            src="/everything-everywhere.gif"
-            alt=""
-            fill
-            className="object-cover"
-            unoptimized
-          />
-          {/* Dark overlay */}
-          <div className="absolute inset-0 bg-[#2a2a28]/80" />
-        </div>
-        <div className="relative mx-auto max-w-3xl px-6 text-center">
-          <h2 className="font-serif text-4xl tracking-[-0.06em] text-white md:text-5xl lg:text-6xl">
-            Everything everywhere, all at once.
-          </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-lg tracking-[-0.04em] text-gray-300">
-            Memory for your entire stack. Sync conversations, snippets, and decisions across your team&apos;s tools—so no one works in isolation.
-          </p>
-
-          {/* Email signup form */}
-          <div className="mx-auto mt-10 flex max-w-lg flex-col gap-3 sm:flex-row">
-            <input
-              type="email"
-              placeholder="you@beautifulperson.com"
-              className="flex-1 rounded-full bg-white px-6 py-4 text-gray-900 placeholder-gray-500 outline-none focus:ring-2 focus:ring-white/50"
-            />
-            <button className="inline-flex items-center justify-center gap-2 rounded-full bg-[#4a4a48] px-6 py-4 font-medium text-white transition-colors hover:bg-[#5a5a58]">
-              Join Waitlist
-              <span>→</span>
-            </button>
-          </div>
-
-          {/* Brand */}
-          <div className="mt-16 flex justify-center">
-            <Image 
-              src="/logo.svg" 
-              alt="memory.store" 
-              width={144} 
-              height={20} 
-              className="brightness-0 invert"
-            />
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }
