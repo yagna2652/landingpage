@@ -120,7 +120,7 @@ export default async function BlogPage() {
             <p className="text-xs tracking-widest text-gray-400">
               THOUGHTS & IDEAS
             </p>
-            <h1 className="mt-4 font-serif text-5xl tracking-tight text-black md:text-6xl lg:text-7xl">
+            <h1 className="mt-4 font-serif text-5xl tracking-[-0.06em] text-black md:text-6xl lg:text-7xl">
               Blog
             </h1>
             <p className="mx-auto mt-6 max-w-lg text-lg text-gray-600">
@@ -161,7 +161,7 @@ export default async function BlogPage() {
                       </p>
                     )}
                     
-                    <h2 className="mx-auto mt-4 max-w-2xl font-serif text-3xl leading-tight tracking-tight text-black group-hover:underline md:text-4xl lg:text-5xl">
+                    <h2 className="mx-auto mt-4 max-w-2xl font-serif text-3xl leading-[1.1] tracking-[-0.06em] text-black group-hover:underline md:text-4xl lg:text-5xl">
                       {featuredPost.title}
                     </h2>
                     
@@ -207,7 +207,7 @@ export default async function BlogPage() {
                         </p>
                       )}
                       
-                      <h3 className="mt-3 font-serif text-xl leading-tight tracking-tight text-black group-hover:underline">
+                      <h3 className="mt-3 font-serif text-xl leading-[1.2] tracking-[-0.04em] text-black group-hover:underline">
                         {post.title}
                       </h3>
                     </div>
