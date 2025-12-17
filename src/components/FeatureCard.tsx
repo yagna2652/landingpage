@@ -60,7 +60,7 @@ export function FeatureCard({
           {/* Background image */}
           <div className={`absolute inset-0 overflow-hidden ${reverse ? "rounded-l-3xl" : "rounded-r-3xl"}`}>
             <Image
-              src="/background.webp"
+              src="/background-2.jpeg"
               alt=""
               fill
               className="object-cover"

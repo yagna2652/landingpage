@@ -29,7 +29,7 @@ export default function Home() {
             {/* Background image */}
             <div className="absolute inset-0 overflow-hidden rounded-3xl">
               <Image
-                src="/background.webp"
+                src="/background-2.jpeg"
                 alt=""
                 fill
                 className="object-cover"
@@ -159,8 +159,20 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#2a2a28] py-24">
-        <div className="mx-auto max-w-3xl px-6 text-center">
+      <footer className="relative overflow-hidden py-24">
+        {/* Background GIF */}
+        <div className="absolute inset-0">
+          <Image
+            src="/everything-everywhere.gif"
+            alt=""
+            fill
+            className="object-cover"
+            unoptimized
+          />
+          {/* Dark overlay */}
+          <div className="absolute inset-0 bg-[#2a2a28]/80" />
+        </div>
+        <div className="relative mx-auto max-w-3xl px-6 text-center">
           <h2 className="font-serif text-4xl tracking-[-0.06em] text-white md:text-5xl lg:text-6xl">
             Everything everywhere, all at once.
           </h2>
