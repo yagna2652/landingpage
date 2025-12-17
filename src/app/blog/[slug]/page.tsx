@@ -186,16 +186,23 @@ export default async function BlogPostPage({
           )}
 
           {/* Content */}
-          <div className="px-8 py-16 md:px-16 md:py-24">
-            <div className="prose prose-lg mx-auto max-w-2xl">
+          <div className="px-6 py-16 md:px-8 md:py-24">
+            <div className="mx-auto max-w-[40rem]">
               {post.content ? (
                 post.content.split("\n\n").map((paragraph, i) => (
-                  <p key={i} className="mb-8 text-xl leading-relaxed text-gray-800">
+                  <p 
+                    key={i} 
+                    className="mb-8 text-[1.25rem] leading-[1.8] tracking-[-0.01em] text-[#374151] antialiased"
+                    style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }}
+                  >
                     {paragraph}
                   </p>
                 ))
               ) : (
-                <p className="text-xl leading-relaxed text-gray-800">
+                <p 
+                  className="text-[1.25rem] leading-[1.8] tracking-[-0.01em] text-[#374151] antialiased"
+                  style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }}
+                >
                   {post.excerpt}
                 </p>
               )}
