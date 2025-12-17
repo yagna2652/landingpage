@@ -11,18 +11,12 @@ export default function Home() {
             memory.store
           </Link>
           <nav className="flex items-center gap-6">
-            <a
-              href="#features"
+            <Link
+              href="/blog"
               className="text-sm text-gray-700 transition-colors hover:text-black"
             >
-              Features
-            </a>
-            <a
-              href="#about"
-              className="text-sm text-gray-700 transition-colors hover:text-black"
-            >
-              About
-            </a>
+              Blog
+            </Link>
             <button className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-800">
               Get Started
             </button>
@@ -39,12 +33,9 @@ export default function Home() {
           <p className="mx-auto mt-6 max-w-xl text-lg text-gray-400">
             Memory store syncs your context across every AI tool and team member—automatically.
           </p>
-          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+          <div className="mt-10">
             <button className="rounded-lg bg-black px-6 py-3 font-medium text-white transition-colors hover:bg-gray-800">
               Start Building Your Memory
-            </button>
-            <button className="rounded-lg border border-gray-400 px-6 py-3 font-medium text-black transition-colors hover:border-black hover:text-black">
-              See How It Works
             </button>
           </div>
         </div>
@@ -161,26 +152,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Third Fold - About/How It Works */}
-      <section id="about" className="border-t border-gray-300 py-24">
-        <div className="mx-auto max-w-3xl px-6">
-          <div className="prose prose-lg mx-auto text-black">
-            <h2 className="font-serif text-3xl text-black">How it works</h2>
-            <p className="text-gray-800">
-              Memory.store integrates seamlessly with your workflow. Whether
-              you&apos;re reading, writing, or coding — your insights are
-              captured and connected automatically.
-            </p>
-            <p className="text-gray-800">
-              Our AI understands context, not just keywords. It knows when
-              you&apos;re building on previous ideas and surfaces the right
-              information at the right time.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Fourth Fold - CTA */}
+      {/* CTA Section */}
       <section className="border-t border-gray-300 py-24">
         <div className="mx-auto max-w-3xl px-6 text-center">
           <h2 className="font-serif text-3xl tracking-tight text-black md:text-4xl">
