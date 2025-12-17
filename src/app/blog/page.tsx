@@ -199,7 +199,7 @@ export default async function BlogPage() {
 
           {/* CTA Section */}
           <section className="border-t border-gray-100 px-8 py-16 text-center md:px-16">
-            <h3 className="font-serif text-3xl text-black">
+            <h3 className="font-serif text-3xl tracking-[-0.06em] text-black">
               Ready to build your memory?
             </h3>
             <p className="mt-3 text-gray-600">

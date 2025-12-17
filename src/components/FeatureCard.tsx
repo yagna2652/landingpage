@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 interface FeatureCardProps {
   title: React.ReactNode;
@@ -56,8 +57,15 @@ export function FeatureCard({
 
         {/* Right - Screen/Visual Placeholder */}
         <div className={`relative flex items-center justify-center p-8 lg:p-12 ${reverse ? "lg:order-1" : ""}`}>
-          {/* Background placeholder for painting/image */}
-          <div className={`absolute inset-0 bg-gray-300 ${reverse ? "rounded-l-3xl" : "rounded-r-3xl"}`} />
+          {/* Background image */}
+          <div className={`absolute inset-0 overflow-hidden ${reverse ? "rounded-l-3xl" : "rounded-r-3xl"}`}>
+            <Image
+              src="/background.webp"
+              alt=""
+              fill
+              className="object-cover"
+            />
+          </div>
 
           {/* Screen mockup placeholder */}
           <div className="relative z-10 w-full max-w-lg">
