@@ -1,0 +1,202 @@
+import Link from "next/link";
+import Image from "next/image";
+import type { Metadata } from "next";
+import { client, guidesQuery, featuredGuideQuery, urlFor } from "@/lib/sanity";
+import type { Guide } from "@/lib/sanity";
+import { formatDate, formatPlatform } from "@/lib/utils";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/input";
+
+export const metadata: Metadata = {
+  title: "Setup Guides - Connect Your Tools",
+  description:
+    "Step-by-step setup guides to connect Memory Store with Raycast, Cursor, Claude Code, ChatGPT, and more.",
+  openGraph: {
+    title: "Setup Guides - memory.store",
+    description:
+      "Step-by-step setup guides to connect Memory Store with your favorite tools.",
+    type: "website",
+  },
+};
+
+async function getGuides(): Promise<Guide[]> {
+  if (!client) return [];
+  try {
+    const guides = await client.fetch(guidesQuery);
+    return guides || [];
+  } catch {
+    return [];
+  }
+}
+
+async function getFeaturedGuide(): Promise<Guide | null> {
+  if (!client) return null;
+  try {
+    const guide = await client.fetch(featuredGuideQuery);
+    return guide || null;
+  } catch {
+    return null;
+  }
+}
+
+export default async function GuidesPage() {
+  const [guides, featuredGuide] = await Promise.all([getGuides(), getFeaturedGuide()]);
+
+  // If no featured guide, use the first guide as featured
+  const actualFeatured = featuredGuide || guides[0] || null;
+  const otherGuides = guides.filter((g) => g._id !== actualFeatured?._id);
+
+  return (
+    <main className="min-h-screen bg-[#e8e5de]">
+      <Header variant="blog" />
+
+      {/* Main Content Card */}
+      <div className="px-4 pb-8 pt-4 md:px-8">
+        <div className="mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] bg-[#f3f1eb]">
+          {/* Guides Header */}
+          <header className="px-8 pb-12 pt-24 text-center md:px-16 md:pt-32">
+            <p className="text-xs tracking-widest text-gray-400">SETUP & CONFIGURATION</p>
+            <h1 className="mt-4 font-serif text-5xl tracking-[-0.06em] text-black md:text-6xl lg:text-7xl">
+              Guides
+            </h1>
+            <p className="mx-auto mt-6 max-w-lg text-lg text-gray-600">
+              Step-by-step setup guides to connect Memory Store with your favorite tools.
+            </p>
+          </header>
+
+          {/* Featured Guide */}
+          {actualFeatured && (
+            <section className="border-t border-gray-100 px-8 py-16 md:px-16">
+              <Link href={`/guides/${actualFeatured.slug.current}`}>
+                <article className="group">
+                  {/* Image */}
+                  <div className="relative aspect-[2/1] overflow-hidden rounded-2xl bg-gray-100">
+                    {actualFeatured.mainImage ? (
+                      <Image
+                        src={urlFor(actualFeatured.mainImage).width(1200).url()}
+                        alt={actualFeatured.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, 1200px"
+                        priority
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+                        <span className="text-sm text-gray-400">Featured</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Content */}
+                  <div className="mt-8 text-center">
+                    <p className="text-xs tracking-widest text-gray-400">
+                      {formatDate(actualFeatured.publishedAt)}
+                      {actualFeatured.readTime && ` · ${actualFeatured.readTime.toUpperCase()}`}
+                    </p>
+
+                    {actualFeatured.platform && (
+                      <p className="mt-3 text-sm font-medium tracking-wider text-black">
+                        {formatPlatform(actualFeatured.platform).toUpperCase()}
+                      </p>
+                    )}
+
+                    <h2 className="mx-auto mt-4 max-w-2xl font-serif text-3xl leading-[1.1] tracking-[-0.06em] text-black group-hover:underline md:text-4xl lg:text-5xl">
+                      {actualFeatured.title}
+                    </h2>
+
+                    <p className="mx-auto mt-4 max-w-xl text-gray-600">
+                      {actualFeatured.excerpt}
+                    </p>
+                  </div>
+                </article>
+              </Link>
+            </section>
+          )}
+
+          {/* Guides Grid - Only show if there are other guides */}
+          {otherGuides.length > 0 && (
+            <section className="border-t border-gray-100 px-8 py-16 md:px-16">
+              <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3">
+                {otherGuides.map((guide) => (
+                  <Link key={guide._id} href={`/guides/${guide.slug.current}`}>
+                    <article className="group text-center">
+                      {/* Image */}
+                      <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-gray-100">
+                        {guide.mainImage ? (
+                          <Image
+                            src={urlFor(guide.mainImage).width(600).height(450).url()}
+                            alt={guide.title}
+                            fill
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+                            <span className="text-xs text-gray-400">Image</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Content */}
+                      <div className="mt-5">
+                        <p className="text-xs tracking-widest text-gray-400">
+                          {formatDate(guide.publishedAt)}
+                          {guide.readTime && ` · ${guide.readTime.toUpperCase()}`}
+                        </p>
+
+                        {guide.platform && (
+                          <p className="mt-2 text-xs font-medium tracking-wider text-black">
+                            {formatPlatform(guide.platform).toUpperCase()}
+                          </p>
+                        )}
+
+                        <h3 className="mt-3 font-serif text-xl leading-[1.2] tracking-[-0.04em] text-black group-hover:underline">
+                          {guide.title}
+                        </h3>
+                      </div>
+                    </article>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Empty State - Show when no guides */}
+          {guides.length === 0 && (
+            <section className="border-t border-gray-100 px-8 py-16 text-center md:px-16">
+              <p className="text-gray-500">No guides yet. Check back soon!</p>
+            </section>
+          )}
+
+          {/* CTA Section */}
+          <section className="border-t border-gray-100 px-8 py-16 text-center md:px-16">
+            <h3 className="font-serif text-3xl tracking-[-0.06em] text-black">
+              Need help with setup?
+            </h3>
+            <p className="mt-3 text-gray-600">
+              Join our Discord community for support and to connect with other users.
+            </p>
+            <form
+              id="cta-waitlist"
+              className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row sm:items-stretch"
+            >
+              <Input
+                type="email"
+                placeholder="you@beautifulperson.com"
+                className="flex-1 border-2 border-gray-300 bg-white focus:border-[#0e0e0e] focus:ring-[#0e0e0e]/20"
+                required
+              />
+              <Button type="submit" rounded="lg" className="h-12 whitespace-nowrap px-6">
+                Join Waitlist
+              </Button>
+            </form>
+          </section>
+        </div>
+      </div>
+
+      <Footer />
+    </main>
+  );
+}
