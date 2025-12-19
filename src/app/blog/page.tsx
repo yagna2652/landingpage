@@ -3,6 +3,8 @@ import Image from "next/image";
 import type { Post } from "@/types";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/input";
 import { sanityFetch } from "@/lib/sanity";
 import { POSTS_QUERY } from "@/lib/queries";
 import { calculateReadTime } from "@/lib/utils";
@@ -34,7 +36,7 @@ export default async function BlogPage() {
 
       {/* Main Content Card */}
       <div className="px-4 pb-8 pt-4 md:px-8">
-        <div className="mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] bg-white">
+        <div className="mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] bg-[#f3f1eb]">
           
           {/* Blog Header */}
           <header className="px-8 pb-12 pt-24 text-center md:px-16 md:pt-32">
@@ -146,15 +148,26 @@ export default async function BlogPage() {
 
           {/* CTA Section */}
           <section className="border-t border-gray-100 px-8 py-16 text-center md:px-16">
-            <h3 className="font-serif text-3xl text-black">
+            <h3 className="font-serif text-3xl tracking-[-0.06em] text-black">
               Ready to build your memory?
             </h3>
             <p className="mt-3 text-gray-600">
               Start capturing and connecting your ideas today.
             </p>
-            <button className="mt-8 rounded-full bg-black px-8 py-4 font-medium text-white transition-colors hover:bg-gray-800">
-              Get Started — It&apos;s Free
-            </button>
+            <form
+              id="cta-waitlist"
+              className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row sm:items-stretch"
+            >
+              <Input
+                type="email"
+                placeholder="you@beautifulperson.com"
+                className="flex-1 border-2 border-gray-300 bg-white focus:border-[#0e0e0e] focus:ring-[#0e0e0e]/20"
+                required
+              />
+              <Button type="submit" rounded="lg" className="h-12 whitespace-nowrap px-6">
+                Join Waitlist
+              </Button>
+            </form>
           </section>
         </div>
       </div>

@@ -72,9 +72,7 @@ export function Header({ variant = "default" }: HeaderProps) {
     }, 500);
   }, []);
 
-  const floatingBgClass = variant === "blog"
-    ? "bg-[#e8e5de]"
-    : "border-b border-gray-300/50 bg-[#ece9e2]/80 backdrop-blur-md";
+  const floatingBgClass = "border-b border-gray-300/50 bg-[#ece9e2]/80 backdrop-blur-md";
 
   const NavContent = () => (
     <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
