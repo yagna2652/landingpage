@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { ScreenMockup } from "@/components/ui/ScreenMockup";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/input";
+import { WaitlistForm } from "@/components/WaitlistForm";
 
 export function HeroSection() {
   return (
@@ -13,15 +12,11 @@ export function HeroSection() {
         <p className="mx-auto mt-6 max-w-xl text-lg tracking-[-0.04em] text-gray-600">
           Memory store syncs your context across every AI tool and team member—automatically.
         </p>
-        <form id="hero-waitlist" className="mx-auto mt-10 flex max-w-md flex-col gap-3 sm:flex-row sm:items-stretch">
-          <Input
-            type="email"
-            placeholder="you@beautifulperson.com"
-            className="flex-1 border-2 border-gray-300 bg-white focus:border-[#0e0e0e] focus:ring-[#0e0e0e]/20"
-            required
-          />
-          <Button type="submit" rounded="lg" className="h-12 px-6 whitespace-nowrap">Join Waitlist</Button>
-        </form>
+        <WaitlistForm
+          source="hero"
+          id="hero-waitlist"
+          className="mx-auto mt-10 flex max-w-md flex-col gap-3 sm:flex-row sm:items-stretch"
+        />
       </div>
 
       {/* Hero Visual - UI Mockup with Background */}
