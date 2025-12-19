@@ -3,50 +3,9 @@ import Image from "next/image";
 import type { Post } from "@/types";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-
-// Demo posts for static display
-const demoPosts: (Post & { readTime: string })[] = [
-  {
-    _id: "1",
-    title: "The museum of forgotten thoughts",
-    slug: { current: "museum-of-forgotten-thoughts" },
-    excerpt:
-      "Many artists have said their big idea came from a very small one. A passing thought or a dream. We all have ideas like that, but most of us forget them.",
-    category: "Thoughts",
-    publishedAt: "2024-12-15",
-    readTime: "3 min read",
-  },
-  {
-    _id: "2",
-    title: "The mess of moodboards & inspiration",
-    slug: { current: "mess-of-moodboards" },
-    excerpt:
-      "How to organize your visual inspiration without losing the creative spark that made you save it in the first place.",
-    category: "Tips & tricks",
-    publishedAt: "2024-12-10",
-    readTime: "4 min read",
-  },
-  {
-    _id: "3",
-    title: "On illusion, love & learning languages",
-    slug: { current: "illusion-love-languages" },
-    excerpt:
-      "What language learning taught me about memory, perception, and the stories we tell ourselves.",
-    category: "Thoughts",
-    publishedAt: "2024-12-05",
-    readTime: "5 min read",
-  },
-  {
-    _id: "4",
-    title: "Travel through time",
-    slug: { current: "travel-through-time" },
-    excerpt:
-      "Your memories are a time machine. Here's how to use them to spark creativity and find inspiration in your past.",
-    category: "Featured",
-    publishedAt: "2024-12-01",
-    readTime: "3 min read",
-  },
-];
+import { sanityFetch } from "@/lib/sanity";
+import { POSTS_QUERY } from "@/lib/queries";
+import { calculateReadTime } from "@/lib/utils";
 
 function formatDate(dateString: string) {
   return new Date(dateString).toLocaleDateString("en-US", {
@@ -56,9 +15,18 @@ function formatDate(dateString: string) {
   }).toUpperCase();
 }
 
-export default function BlogPage() {
-  const featuredPost = demoPosts[0];
-  const otherPosts = demoPosts.slice(1);
+export default async function BlogPage() {
+  // Fetch all posts from Sanity
+  const posts = await sanityFetch<Post[]>(POSTS_QUERY) || [];
+
+  // Calculate readTime for each post
+  const postsWithReadTime = posts.map(post => ({
+    ...post,
+    readTime: calculateReadTime(post.body)
+  }));
+
+  const featuredPost = postsWithReadTime[0];
+  const otherPosts = postsWithReadTime.slice(1);
 
   return (
     <main className="min-h-screen bg-[#e8e5de]">

@@ -59,3 +59,18 @@ const PLATFORM_NAMES: Record<string, string> = {
 export function formatPlatform(platform: string): string {
   return PLATFORM_NAMES[platform] || platform;
 }
+
+// Read time calculation utility
+/**
+ * Calculates estimated reading time based on word count
+ * Assumes average reading speed of 200 words per minute
+ */
+export function calculateReadTime(text: string | undefined): string {
+  if (!text) return '1 min read';
+
+  const wordsPerMinute = 200;
+  const wordCount = text.trim().split(/\s+/).length;
+  const minutes = Math.ceil(wordCount / wordsPerMinute);
+
+  return `${minutes} min read`;
+}

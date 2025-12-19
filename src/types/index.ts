@@ -9,7 +9,6 @@ export interface Post {
   category?: string;
   publishedAt: string;
   body?: string;
-  content?: string;
 }
 
 export interface Guide {
