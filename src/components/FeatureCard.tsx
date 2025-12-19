@@ -9,6 +9,7 @@ interface FeatureCardProps {
   backgroundImage?: string;
   className?: string;
   reverse?: boolean;
+  priority?: boolean;
 }
 
 export function FeatureCard({
@@ -19,6 +20,7 @@ export function FeatureCard({
   backgroundImage,
   className = "",
   reverse = false,
+  priority = false,
 }: FeatureCardProps) {
   return (
     <div className={`relative overflow-hidden rounded-3xl bg-[#f3f1eb] ${className}`}>
@@ -64,6 +66,10 @@ export function FeatureCard({
               alt=""
               fill
               className="object-cover"
+              priority={priority}
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
             />
           </div>
 

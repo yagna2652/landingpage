@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { client, postsQuery, featuredPostQuery, urlFor } from "@/lib/sanity";
-import type { Post } from "@/lib/sanity";
+import Image from "next/image";
+import type { Post } from "@/types";
 
-// Demo posts for when Sanity is not configured
+// Demo posts for static display
 const demoPosts: (Post & { readTime: string })[] = [
   {
     _id: "1",
@@ -46,30 +46,6 @@ const demoPosts: (Post & { readTime: string })[] = [
   },
 ];
 
-async function getPosts(): Promise<(Post & { readTime?: string })[]> {
-  try {
-    if (!client) {
-      return demoPosts;
-    }
-    const posts = await client.fetch(postsQuery);
-    return posts.length > 0 ? posts : demoPosts;
-  } catch {
-    return demoPosts;
-  }
-}
-
-async function getFeaturedPost(): Promise<(Post & { readTime?: string }) | null> {
-  try {
-    if (!client) {
-      return demoPosts[0];
-    }
-    const post = await client.fetch(featuredPostQuery);
-    return post || demoPosts[0];
-  } catch {
-    return demoPosts[0];
-  }
-}
-
 function formatDate(dateString: string) {
   return new Date(dateString).toLocaleDateString("en-US", {
     year: "numeric",
@@ -78,13 +54,9 @@ function formatDate(dateString: string) {
   }).toUpperCase();
 }
 
-export default async function BlogPage() {
-  const [posts, featuredPost] = await Promise.all([
-    getPosts(),
-    getFeaturedPost(),
-  ]);
-
-  const otherPosts = posts.filter((p) => p._id !== featuredPost?._id);
+export default function BlogPage() {
+  const featuredPost = demoPosts[0];
+  const otherPosts = demoPosts.slice(1);
 
   return (
     <main className="min-h-screen bg-[#e8e5de]">
@@ -134,12 +106,15 @@ export default async function BlogPage() {
               <Link href={`/blog/${featuredPost.slug.current}`}>
                 <article className="group">
                   {/* Image */}
-                  <div className="aspect-[2/1] overflow-hidden rounded-2xl bg-gray-100">
+                  <div className="relative aspect-[2/1] overflow-hidden rounded-2xl bg-gray-100">
                     {featuredPost.mainImage ? (
-                      <img
-                        src={urlFor(featuredPost.mainImage).width(1200).url()}
+                      <Image
+                        src={featuredPost.mainImage}
                         alt={featuredPost.title}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
+                        priority
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
@@ -181,12 +156,15 @@ export default async function BlogPage() {
                 <Link key={post._id} href={`/blog/${post.slug.current}`}>
                   <article className="group text-center">
                     {/* Image */}
-                    <div className="aspect-[4/3] overflow-hidden rounded-xl bg-gray-100">
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-gray-100">
                       {post.mainImage ? (
-                        <img
-                          src={urlFor(post.mainImage).width(600).url()}
+                        <Image
+                          src={post.mainImage}
                           alt={post.title}
-                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          loading="lazy"
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">

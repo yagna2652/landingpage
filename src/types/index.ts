@@ -1,18 +1,14 @@
 // Shared types used across the application
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export type SanityImageSource = any;
-/* eslint-enable @typescript-eslint/no-explicit-any */
-
 export interface Post {
   _id: string;
   title: string;
   slug: { current: string };
   excerpt: string;
-  mainImage?: SanityImageSource;
+  mainImage?: string;
   category?: string;
   publishedAt: string;
-  body?: unknown[];
+  body?: string;
   content?: string;
 }
 
@@ -21,13 +17,13 @@ export interface Guide {
   title: string;
   slug: { current: string };
   excerpt: string;
-  mainImage?: SanityImageSource;
+  mainImage?: string;
   platform?: string;
   difficulty?: string;
   readTime?: string;
   featured?: boolean;
   publishedAt: string;
-  body?: unknown[];
+  body?: string;
 }
 
 export interface FeatureCardData {
