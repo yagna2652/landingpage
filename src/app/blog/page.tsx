@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Post } from "@/types";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 // Demo posts for static display
 const demoPosts: (Post & { readTime: string })[] = [
@@ -60,28 +62,7 @@ export default function BlogPage() {
 
   return (
     <main className="min-h-screen bg-[#e8e5de]">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-[#e8e5de]">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-          <Link
-            href="/"
-            className="font-serif text-xl tracking-tight text-black"
-          >
-            memory.store
-          </Link>
-          <nav className="flex items-center gap-6">
-            <Link
-              href="/blog"
-              className="text-sm font-medium text-black"
-            >
-              Blog
-            </Link>
-            <button className="rounded-full bg-black px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-800">
-              Sign up
-            </button>
-          </nav>
-        </div>
-      </header>
+      <Header variant="blog" />
 
       {/* Main Content Card */}
       <div className="px-4 pb-8 pt-4 md:px-8">
@@ -210,17 +191,7 @@ export default function BlogPage() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="py-8 text-center">
-        <div className="flex justify-center gap-6 text-sm text-gray-600">
-          <a href="#" className="hover:text-black">Privacy</a>
-          <a href="#" className="hover:text-black">Terms</a>
-          <a href="#" className="hover:text-black">Contact</a>
-        </div>
-        <p className="mt-4 text-sm text-gray-500">
-          © 2025 memory.store
-        </p>
-      </footer>
+      <Footer />
     </main>
   );
 }
