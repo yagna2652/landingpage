@@ -1,81 +1,32 @@
-import { createClient, type SanityClient } from "@sanity/client";
-import imageUrlBuilder from "@sanity/image-url";
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
-type SanityImageSource = any;
-type ImageBuilder = any;
-/* eslint-enable @typescript-eslint/no-explicit-any */
+import { createClient } from '@sanity/client';
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
-const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
 
-// Only create client if projectId is configured
-export const client: SanityClient | null = projectId
+export const client = projectId
   ? createClient({
       projectId,
       dataset,
-      apiVersion: "2024-01-01",
-      useCdn: true,
+      apiVersion: '2024-01-01',
+      useCdn: false, // Disable CDN for fresh data on every request
     })
   : null;
 
-const builder = projectId
-  ? imageUrlBuilder({ projectId, dataset })
-  : null;
+export async function sanityFetch<T = unknown>(
+  query: string,
+  params: Record<string, unknown> = {}
+): Promise<T | null> {
+  if (!client) {
+    return null;
+  }
 
-// Dummy builder for when Sanity is not configured
-const dummyBuilder = {
-  width: () => dummyBuilder,
-  height: () => dummyBuilder,
-  url: () => "",
-};
-
-export function urlFor(source: SanityImageSource): ImageBuilder {
-  if (!builder || !source) return dummyBuilder;
-  return builder.image(source);
+  try {
+    return await client.fetch<T>(query, params, {
+      cache: 'no-store', // Always fetch fresh data (dynamic rendering)
+    });
+  } catch (error) {
+    console.error('Sanity fetch error:', error);
+    return null;
+  }
 }
 
-// Types
-export interface Post {
-  _id: string;
-  title: string;
-  slug: { current: string };
-  excerpt: string;
-  mainImage?: SanityImageSource;
-  category?: string;
-  publishedAt: string;
-  body?: unknown[];
-  content?: string;
-}
-
-// Queries
-export const postsQuery = `*[_type == "post"] | order(publishedAt desc) {
-  _id,
-  title,
-  slug,
-  excerpt,
-  mainImage,
-  category,
-  publishedAt
-}`;
-
-export const postQuery = `*[_type == "post" && slug.current == $slug][0] {
-  _id,
-  title,
-  slug,
-  excerpt,
-  mainImage,
-  category,
-  publishedAt,
-  body
-}`;
-
-export const featuredPostQuery = `*[_type == "post" && featured == true][0] {
-  _id,
-  title,
-  slug,
-  excerpt,
-  mainImage,
-  category,
-  publishedAt
-}`;

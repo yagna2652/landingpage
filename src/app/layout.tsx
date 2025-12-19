@@ -77,8 +77,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${crimsonPro.variable} ${inter.variable}`}>
-      <body className="min-h-screen bg-[#ece9e2] text-black antialiased">
+    <html lang="en" className={`${crimsonPro.variable} ${inter.variable}`} suppressHydrationWarning>
+      <body className="min-h-screen bg-[#ece9e2] text-black antialiased" suppressHydrationWarning>
         {children}
       </body>
     </html>

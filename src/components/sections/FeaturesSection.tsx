@@ -41,6 +41,7 @@ export function FeaturesSection() {
             linkHref={feature.linkHref}
             backgroundImage={feature.backgroundImage}
             reverse={feature.reverse}
+            priority={index === 0}
           />
         ))}
       </div>

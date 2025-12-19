@@ -1,13 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
-import { client, guidesQuery, featuredGuideQuery, urlFor } from "@/lib/sanity";
-import type { Guide } from "@/lib/sanity";
-import { formatDate, formatPlatform } from "@/lib/utils";
+import type { Guide } from "@/types";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/input";
+import { sanityFetch } from "@/lib/sanity";
+import { GUIDES_QUERY } from "@/lib/queries";
+import { calculateReadTime } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Setup Guides - Connect Your Tools",
@@ -21,32 +22,26 @@ export const metadata: Metadata = {
   },
 };
 
-async function getGuides(): Promise<Guide[]> {
-  if (!client) return [];
-  try {
-    const guides = await client.fetch(guidesQuery);
-    return guides || [];
-  } catch {
-    return [];
-  }
-}
-
-async function getFeaturedGuide(): Promise<Guide | null> {
-  if (!client) return null;
-  try {
-    const guide = await client.fetch(featuredGuideQuery);
-    return guide || null;
-  } catch {
-    return null;
-  }
+function formatDate(dateString: string) {
+  return new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).toUpperCase();
 }
 
 export default async function GuidesPage() {
-  const [guides, featuredGuide] = await Promise.all([getGuides(), getFeaturedGuide()]);
+  // Fetch all guides from Sanity
+  const guides = await sanityFetch<Guide[]>(GUIDES_QUERY) || [];
 
-  // If no featured guide, use the first guide as featured
-  const actualFeatured = featuredGuide || guides[0] || null;
-  const otherGuides = guides.filter((g) => g._id !== actualFeatured?._id);
+  // Calculate readTime for each guide
+  const guidesWithReadTime = guides.map(guide => ({
+    ...guide,
+    readTime: calculateReadTime(guide.body)
+  }));
+
+  const featuredGuide = guidesWithReadTime[0];
+  const otherGuides = guidesWithReadTime.slice(1);
 
   return (
     <main className="min-h-screen bg-[#e8e5de]">
@@ -67,19 +62,19 @@ export default async function GuidesPage() {
           </header>
 
           {/* Featured Guide */}
-          {actualFeatured && (
+          {featuredGuide && (
             <section className="border-t border-gray-100 px-8 py-16 md:px-16">
-              <Link href={`/guides/${actualFeatured.slug.current}`}>
+              <Link href={`/guides/${featuredGuide.slug.current}`}>
                 <article className="group">
                   {/* Image */}
                   <div className="relative aspect-[2/1] overflow-hidden rounded-2xl bg-gray-100">
-                    {actualFeatured.mainImage ? (
+                    {featuredGuide.mainImage ? (
                       <Image
-                        src={urlFor(actualFeatured.mainImage).width(1200).url()}
-                        alt={actualFeatured.title}
+                        src={featuredGuide.mainImage}
+                        alt={featuredGuide.title}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        sizes="(max-width: 768px) 100vw, 1200px"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
                         priority
                       />
                     ) : (
@@ -92,22 +87,22 @@ export default async function GuidesPage() {
                   {/* Content */}
                   <div className="mt-8 text-center">
                     <p className="text-xs tracking-widest text-gray-400">
-                      {formatDate(actualFeatured.publishedAt)}
-                      {actualFeatured.readTime && ` · ${actualFeatured.readTime.toUpperCase()}`}
+                      {formatDate(featuredGuide.publishedAt)}
+                      {featuredGuide.readTime && ` · ${featuredGuide.readTime.toUpperCase()}`}
                     </p>
 
-                    {actualFeatured.platform && (
+                    {featuredGuide.platform && (
                       <p className="mt-3 text-sm font-medium tracking-wider text-black">
-                        {formatPlatform(actualFeatured.platform).toUpperCase()}
+                        {featuredGuide.platform.toUpperCase()}
                       </p>
                     )}
 
                     <h2 className="mx-auto mt-4 max-w-2xl font-serif text-3xl leading-[1.1] tracking-[-0.06em] text-black group-hover:underline md:text-4xl lg:text-5xl">
-                      {actualFeatured.title}
+                      {featuredGuide.title}
                     </h2>
 
                     <p className="mx-auto mt-4 max-w-xl text-gray-600">
-                      {actualFeatured.excerpt}
+                      {featuredGuide.excerpt}
                     </p>
                   </div>
                 </article>
@@ -115,60 +110,51 @@ export default async function GuidesPage() {
             </section>
           )}
 
-          {/* Guides Grid - Only show if there are other guides */}
-          {otherGuides.length > 0 && (
-            <section className="border-t border-gray-100 px-8 py-16 md:px-16">
-              <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3">
-                {otherGuides.map((guide) => (
-                  <Link key={guide._id} href={`/guides/${guide.slug.current}`}>
-                    <article className="group text-center">
-                      {/* Image */}
-                      <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-gray-100">
-                        {guide.mainImage ? (
-                          <Image
-                            src={urlFor(guide.mainImage).width(600).height(450).url()}
-                            alt={guide.title}
-                            fill
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
-                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          />
-                        ) : (
-                          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
-                            <span className="text-xs text-gray-400">Image</span>
-                          </div>
-                        )}
-                      </div>
+          {/* Guides Grid */}
+          <section className="border-t border-gray-100 px-8 py-16 md:px-16">
+            <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3">
+              {otherGuides.map((guide) => (
+                <Link key={guide._id} href={`/guides/${guide.slug.current}`}>
+                  <article className="group text-center">
+                    {/* Image */}
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-gray-100">
+                      {guide.mainImage ? (
+                        <Image
+                          src={guide.mainImage}
+                          alt={guide.title}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+                          <span className="text-xs text-gray-400">Image</span>
+                        </div>
+                      )}
+                    </div>
 
-                      {/* Content */}
-                      <div className="mt-5">
-                        <p className="text-xs tracking-widest text-gray-400">
-                          {formatDate(guide.publishedAt)}
-                          {guide.readTime && ` · ${guide.readTime.toUpperCase()}`}
+                    {/* Content */}
+                    <div className="mt-5">
+                      <p className="text-xs tracking-widest text-gray-400">
+                        {formatDate(guide.publishedAt)}
+                      </p>
+
+                      {guide.platform && (
+                        <p className="mt-2 text-xs font-medium tracking-wider text-black">
+                          {guide.platform.toUpperCase()}
                         </p>
+                      )}
 
-                        {guide.platform && (
-                          <p className="mt-2 text-xs font-medium tracking-wider text-black">
-                            {formatPlatform(guide.platform).toUpperCase()}
-                          </p>
-                        )}
-
-                        <h3 className="mt-3 font-serif text-xl leading-[1.2] tracking-[-0.04em] text-black group-hover:underline">
-                          {guide.title}
-                        </h3>
-                      </div>
-                    </article>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          )}
-
-          {/* Empty State - Show when no guides */}
-          {guides.length === 0 && (
-            <section className="border-t border-gray-100 px-8 py-16 text-center md:px-16">
-              <p className="text-gray-500">No guides yet. Check back soon!</p>
-            </section>
-          )}
+                      <h3 className="mt-3 font-serif text-xl leading-[1.2] tracking-[-0.04em] text-black group-hover:underline">
+                        {guide.title}
+                      </h3>
+                    </div>
+                  </article>
+                </Link>
+              ))}
+            </div>
+          </section>
 
           {/* CTA Section */}
           <section className="border-t border-gray-100 px-8 py-16 text-center md:px-16">
@@ -176,7 +162,7 @@ export default async function GuidesPage() {
               Need help with setup?
             </h3>
             <p className="mt-3 text-gray-600">
-              Join our Discord community for support and to connect with other users.
+              Join our community to get support and connect with other users.
             </p>
             <form
               id="cta-waitlist"
